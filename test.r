@@ -1,21 +1,46 @@
+myplot <-
+  function (x = "DTK.test output") {
+    out = x[[2]]
+    a = x[[1]]
+    n = nrow(out)
+    plot(c(max(out[, 3]), min(out[, 2])), c(1, n), type = "n", xlab = "Mean Difference", ylab = "Mean Comparison", yaxt = "n", las=1)
+    
+    axis(2, at = seq(1, n), labels = rownames(out), las=1)
+    title(main = paste(paste(((1 - a) * 100), "%", sep = ""),
+                       "Confidence Intervals"))
+    
+    
+    
+    for (i in 1:n) {
+      lines(x=c(-1e100,1e100),y=c(i,i),col="gray",lty=2)
+      if(out[i,2]>0 || out[i,3]<0){
+        lines(out[i, 2:3], y = c(i, i),col="red",lwd=2)
+        points(x = out[i, 1], y = i,col="red")
+      } else{
+        lines(out[i, 2:3], y = c(i, i))
+        points(x = out[i, 1], y = i)
+      }  
+    }
+  }
 
-#Create data
-names=c(rep("Maestro", 20) , rep("Presto", 20) , 
-        rep("Nerak", 20), rep("Eskimo", 20), rep("Nairobi", 20), rep("Artiko", 20))
-value=c(  sample(3:10, 20 , replace=T) , sample(2:5, 20 , replace=T) , 
-          sample(6:10, 20 , replace=T), sample(6:10, 20 , replace=T) , 
-          sample(1:7, 20 , replace=T), sample(3:10, 20 , replace=T) )
-data=data.frame(names,value)
+df <- read.csv("dataset.csv")
+#df$architecture <- as.character(df$architecture)
+#df$architecture[df$architecture == "BiLSTM"] <- "B"
 
-#Classical boxplot
-boxplot(data$value ~ data$names)
+df$category[df$architecture == "LSTM"] <- "A"
+df$category[df$architecture == "GRU"] <- "B"
+df$category[df$architecture == "BiLSTM"] <- "C"
+df$category[df$architecture == "Tree-LSTM"] <- "D"
+df$category[df$architecture == "Ensemble"] <- "E"
+df$category[df$architecture == "CNN"] <- "F"
 
-# Add specific color to Nairobi and Eskimo
-boxplot(data$value ~ data$names , 
-        col=ifelse(levels(data$names)=="Nairobi" , rgb(0.1,0.1,0.7,0.5) , 
-                   ifelse(levels(data$names)=="Eskimo",rgb(0.8,0.1,0.3,0.6),"grey90" ) ) , 
-        ylab="disease" , xlab="- variety -")
+df$overfitting_score <- df$train.acc - df$test.acc
 
-#Add a legend
-legend("bottomleft", legend = c("Positiv control","Negativ control") , 
-       col = c(rgb(0.1,0.1,0.7,0.5) , rgb(0.8,0.1,0.3,0.6)) , bty = "n", pch=20 , pt.cex = 3, cex = 1, horiz = FALSE, inset = c(0.03, 0.1))
+
+DTK.result = DTK.test(x = df$overfitting_score, f = df$category)
+
+myplot(DTK.result)
+
+DTK.result = DTK.test(x = df$test.acc, f = df$category)
+
+myplot(DTK.result)
