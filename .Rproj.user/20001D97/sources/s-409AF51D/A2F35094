@@ -1,0 +1,23 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1542633655790.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "A2F35094",
+    "lastKnownWriteTime" : 1542633663,
+    "last_content_update" : 1542633663463,
+    "path" : "C:/Users/ichida/dev/puc/planejamento-pesquisa/snli-quantitative-analysis/test.r",
+    "project_path" : "test.r",
+    "properties" : {
+        "cursorPosition" : "3,55",
+        "scrollLine" : "0",
+        "tempName" : "Untitled1"
+    },
+    "relative_order" : 6,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}
