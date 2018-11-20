@@ -1,24 +1,5 @@
-myplot <-
-  function (x = "DTK.test output") {
-    out = x[[2]]
-    a = x[[1]]
-    n = nrow(out)
-    plot(c(max(out[, 3]), min(out[, 2])), c(1, n), type = "n", xlab = "Mean Difference", ylab = "Mean Comparison", yaxt = "n", las=1)
-    
-    axis(2, at = seq(1, n), labels = rownames(out), las=1)
-    title(main = paste(paste(((1 - a) * 100), "%", sep = ""),
-                       "Confidence Intervals"))
-    
-    
-    
-    for (i in 1:n) {
-      lines(x=c(-1e100,1e100),y=c(i,i),col="gray",lty=2)
-      if(out[i,2]>0 || out[i,3]<0){
-        lines(out[i, 2:3], y = c(i, i),col="red",lwd=2)
-        points(x = out[i, 1], y = i,col="red")
-      } else{
-        lines(out[i, 2:3], y = c(i, i))
-        points(x = out[i, 1], y = i)
-      }  
-    }
-  }
+x=c(rnorm(25,5,2),rnorm(30,5,5),rnorm(35,15,5))
+f<-gl.unequal(n=3,k=c(25,30,35))
+DTK.result<-DTK.test(x=x,f=f,a=0.05)
+DTK.result
+DTK.plot(DTK.result)

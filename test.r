@@ -43,17 +43,17 @@ table(df$category)
 
 Summarize(test.acc ~ architecture, data=df, digits=2)
 
-# First analysis: Overfitting score (train.acc - test.acc)
-DTK.result = DTK.test(x = df$overfitting_score, f = df$category)
-Summarize(overfitting_score ~ architecture, data=df, digits=2)
-customizedPlot(DTK.result)
-ajuste = lm(data = df, overfitting_score ~ .)
-anova(ajuste)
-
 # Second analysys: Generalization capacity: test.accuracy
-DTK.result = DTK.test(x = df$test.acc, f = df$category)
-Summarize(test.acc ~ architecture, data=df, digits=2)
-customizedPlot(DTK.result)
+result1 = DTK.test(x = df$test.acc, f = df$category)
+means1 = Summarize(test.acc ~ architecture, data=df, digits=2)
+write.csv(means1, file = "means1.csv")
+customizedPlot(result1)
+
+
+# First analysis: Overfitting score (train.acc - test.acc)
+result2 = DTK.test(x = df$overfitting_score, f = df$category)
+aSummarize(overfitting_score ~ architecture, data=df, digits=2)
+customizedPlot(result2)
 
 
 # Third Analysis: number of required parameters
@@ -61,7 +61,7 @@ df$m <- as.numeric(sub("m", "e6", df$parameters, fixed = TRUE))
 df$k <- as.numeric(sub("k", "e3", df$parameters, fixed = TRUE))
 df$parameters <- if_else(is.na(df$m), df$k/100000, df$m/100000) 
 
-Summarize(parameters ~ architecture, data=df, digits=2)
-DTK.result = DTK.test(x = df$parameters, f = df$category, a=0.05)
-customizedPlot(DTK.result)
+Summarize(parameters ~ category, data=df, digits=2)
+result3 = DTK.test(x = df$parameters, f = df$category, a=0.05)
+customizedPlot(result3)
 
